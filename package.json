@@ -8,9 +8,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build:cjs": "microbundle --no-sourcemap --format cjs --output dist/cjs",
-    "build:umd": "microbundle --no-sourcemap --format umd --output dist/umd",
     "build:esm": "microbundle --no-sourcemap --format esm --output dist/esm",
-    "build": "microbundle --tsconfig tsconfig.json --no-sourcemap",
+    "build": "pnpm run build:cjs && pnpm run build:esm",
     "test": "jest --watchAll --verbose",
     "prepare": "husky",
     "lint": "eslint ./src/ --ext .ts,.tsx,.js,.jsx",
