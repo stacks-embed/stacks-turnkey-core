@@ -36,7 +36,7 @@ const sdk = new StacksTurnkey({
   apiBaseUrl: process.env.TURNKEY_API_BASE_URL!,
   apiPrivateKey: process.env.TURNKEY_API_PRIVATE_KEY!,
   apiPublicKey: process.env.TURNKEY_API_PUBLIC_KEY!,
-  defaultOrganizationId: process.env.TURNKEY_DEFAULT_ORGANIZATION_ID!,
+  defaultOrganizationId: process.env.TURNKEY_ORGANIZATION_ID!,
   // network?: "mainnet" | "testnet" (default: "testnet")
 });
 
