@@ -2,13 +2,20 @@
   "name": "turnkey-stacks",
   "version": "1.0.0",
   "description": "",
-  "main": "src/stacks-turnkey-sdk.ts",
-  "module": "dist/index.m.js",
-  "cjs": "dist/cjs/index.js",
+  "main": "dist/cjs/turnkey-stacks.js",
+  "module": "dist/esm/turnkey-stacks.m.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/esm/turnkey-stacks.m.js",
+      "require": "./dist/cjs/turnkey-stacks.js",
+      "default": "./dist/esm/turnkey-stacks.m.js"
+    }
+  },
   "scripts": {
-    "build:cjs": "microbundle --no-sourcemap --format cjs --output dist/cjs",
-    "build:esm": "microbundle --no-sourcemap --format esm --output dist/esm",
+    "build:cjs": "microbundle --no-sourcemap --format cjs --output dist/cjs --target node",
+    "build:esm": "microbundle --no-sourcemap --format esm --output dist/esm --target browser",
     "build": "pnpm run build:cjs && pnpm run build:esm",
     "test": "jest --watchAll --verbose",
     "prepare": "husky",
