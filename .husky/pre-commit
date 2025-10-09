@@ -1,0 +1,7 @@
+pnpm test
+
+
+pnpm run lint
+
+
+pnpm run build
