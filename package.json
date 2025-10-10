@@ -13,9 +13,10 @@
     }
   },
   "scripts": {
-    "build:cjs": "microbundle --no-sourcemap --format cjs --output dist/cjs --target node",
-    "build:esm": "microbundle --no-sourcemap --format esm --output dist/esm --target browser",
-    "build": "pnpm run build:cjs && pnpm run build:esm",
+    "build:cjs": "microbundle --no-sourcemap --format cjs --output dist/cjs",
+    "build:umd": "microbundle --no-sourcemap --format umd --output dist/umd",
+    "build:esm": "microbundle --no-sourcemap --format esm --output dist/esm",
+    "build": "microbundle --tsconfig tsconfig.json --no-sourcemap",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watchAll --verbose",
     "prepare": "husky",
