@@ -1,16 +1,15 @@
 {
-  "name": "stacks-turnkey-core",
-  "version": "1.0.13",
+  "name": "stacks-turnkey-main",
+  "version": "1.0.2",
   "description": "",
-  "main": "dist/cjs/turnkey-stacks.js",
-  "module": "dist/esm/turnkey-stacks.m.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/js/stacks-turnkey-main.js",
+  "module": "dist/esm/stacks-turnkey-main.m.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/esm/turnkey-stacks.m.js",
-      "require": "./dist/cjs/turnkey-stacks.js",
-      "default": "./dist/esm/turnkey-stacks.m.js"
+      "import": "./dist/esm/stacks-turnkey-main.m.js",
+      "require": "./dist/js/stacks-turnkey-main.js",
+      "default": "./dist/esm/stacks-turnkey-main.m.js"
     }
   },
   "scripts": {
@@ -22,6 +21,7 @@
     "prepare": "husky",
     "lint": "eslint ./src/ --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint ./src --fix",
+    "example": "tsx ./src/example.ts",
     "release": "standard-version"
   },
   "files": [
@@ -67,5 +67,8 @@
     "@stacks/transactions": "^7.1.0",
     "@turnkey/sdk-server": "^4.10.1",
     "jsonwebtoken": "^9.0.2"
+  },
+  "dependencies": {
+    "tsx": "^4.20.6"
   }
 }
