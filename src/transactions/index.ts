@@ -163,7 +163,7 @@ export default class Transactions extends Base {
   public async getFeeRate(): Promise<string> {
     try {
       const response = await this.invoke<string>(
-        "https://api.testnet.hiro.so/v2/fees/transfer"
+        `https://api.${this.getNetwork()}.hiro.so/v2/fees/transfer`
       );
       const bigintVal = BigInt(response);
       return bigintVal.toString();
@@ -285,38 +285,65 @@ export default class Transactions extends Base {
     contractCallOptions: UnsignedContractCallOptions;
   }) {
     try {
+      // Create unsigned contract call transaction
       const transaction = await makeUnsignedContractCall(contractCallOptions);
-      const txSigner = new TransactionSigner(transaction);
-      const stacksTxSigner = txSigner;
-      const stacksTransaction = txSigner.transaction;
 
+      // Get current nonce for sender address derived from public key
+      const senderAddress = publicKeyToAddress(
+        turnkeyWalletAddress,
+        this.getNetwork()
+      );
+      const nonceStr = await this.getCurrentNonce(senderAddress);
+      const nonce = BigInt(nonceStr);
+
+      // Set nonce and fee on transaction auth spending condition
+      transaction.auth.spendingCondition.nonce = nonce;
+
+      // Fetch fee rate and estimate transaction size for fee calculation
+      const feeRateStr = await this.getFeeRate();
+      const feeRate = BigInt(feeRateStr);
+      const estimatedSize = transaction.serializeBytes().byteLength;
+      const estimatedFee = feeRate * BigInt(estimatedSize);
+
+      // Set fee on transaction auth spending condition
+      transaction.auth.spendingCondition.fee = estimatedFee;
+
+      // Create TransactionSigner and get pre-signature hash
+      const txSigner = new TransactionSigner(transaction);
       const preSignSigHash = sigHashPreSign(
-        stacksTxSigner.sigHash,
-        stacksTransaction.auth.authType,
-        stacksTransaction.auth.spendingCondition.fee,
-        stacksTransaction.auth.spendingCondition.nonce
+        txSigner.sigHash,
+        transaction.auth.authType,
+        estimatedFee,
+        nonce
       );
 
+      // Prepare payload for signing
       const payload = `0x${preSignSigHash}`;
+
+      // Request signature from turnkey API client, signing with the public key hex
       const signature = await this.getClient().apiClient().signRawPayload({
         payload,
         signWith: turnkeyWalletAddress,
         encoding: "PAYLOAD_ENCODING_HEXADECIMAL",
         hashFunction: "HASH_FUNCTION_NO_OP",
       });
+
       if (!signature) throw new Error("No signature returned");
 
+      // Format signature string as v + r + s (padded to 64 chars)
       const signatureString = `${signature.v}${signature.r.padStart(
         64,
         "0"
       )}${signature.s.padStart(64, "0")}`;
 
-      const spendingCondition = stacksTransaction.auth
+      // Assign signature to spending condition
+      const spendingCondition = transaction.auth
         .spendingCondition as SingleSigSpendingCondition;
       spendingCondition.signature = createMessageSignature(signatureString);
 
+      // Broadcast transaction on the network
       const broadcastResult = await broadcastTransaction({
-        transaction: stacksTransaction,
+        transaction,
         network: this.getNetwork(),
       });
 
@@ -339,6 +366,7 @@ export default class Transactions extends Base {
     amount: bigint;
   }) {
     try {
+      // Define the contract call options for sBTC transfer
       const contractCallOptions = {
         contractAddress: "SM3VDXK3WZZSA84XXFKAFAF15NNZX32CTSG82JFQ4",
         contractName: "sbtc-token",
@@ -355,12 +383,64 @@ export default class Transactions extends Base {
         network: this.getNetwork(),
       };
 
-      const result = await this.executeFunctionCall({
+      // Create the unsigned contract call transaction
+      const transaction = await makeUnsignedContractCall(contractCallOptions);
+
+      // Get current nonce for the sender address
+      const senderAddress = publicKeyToAddress(
         turnkeyWalletAddress,
-        contractCallOptions,
+        this.getNetwork()
+      );
+      const nonceStr = await this.getCurrentNonce(senderAddress);
+      const nonce = BigInt(nonceStr);
+
+      // Set nonce and fee on transaction spending condition
+      transaction.auth.spendingCondition.nonce = nonce;
+
+      // Calculate fee based on transaction size and fee rate
+      const feeRateStr = await this.getFeeRate();
+      const feeRate = BigInt(feeRateStr);
+      const estimatedSize = transaction.serializeBytes().byteLength;
+      const estimatedFee = feeRate * BigInt(estimatedSize);
+      transaction.auth.spendingCondition.fee = estimatedFee;
+
+      // Prepare signature payload
+      const txSigner = new TransactionSigner(transaction);
+      const preSignSigHash = sigHashPreSign(
+        txSigner.sigHash,
+        transaction.auth.authType,
+        estimatedFee,
+        nonce
+      );
+
+      const payload = `0x${preSignSigHash}`;
+
+      // Request signature from turnkey API client
+      const signature = await this.getClient().apiClient().signRawPayload({
+        payload,
+        signWith: turnkeyWalletAddress,
+        encoding: "PAYLOAD_ENCODING_HEXADECIMAL",
+        hashFunction: "HASH_FUNCTION_NO_OP",
       });
 
-      return toSerializableJson(result);
+      if (!signature) throw new Error("No signature returned");
+
+      // Format signature string and assign to spending condition
+      const signatureString = `${signature.v}${signature.r.padStart(
+        64,
+        "0"
+      )}${signature.s.padStart(64, "0")}`;
+      const spendingCondition = transaction.auth
+        .spendingCondition as SingleSigSpendingCondition;
+      spendingCondition.signature = createMessageSignature(signatureString);
+
+      // Broadcast the signed transaction
+      const broadcastResult = await broadcastTransaction({
+        transaction,
+        network: this.getNetwork(),
+      });
+
+      return toSerializableJson(broadcastResult);
     } catch (error) {
       console.error("Error transferring sBTC:", error);
       throw error;

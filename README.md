@@ -41,7 +41,7 @@ const sdk = new StacksTurnkey({
 });
 
 async function main() {
-  const res = await sdk.generateStacksWallet({
+  const res = await sdk.createStacksWallet({
     userName: "alice",
     walletName: "alice",
   });

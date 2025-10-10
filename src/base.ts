@@ -7,6 +7,7 @@ export default class Base {
   protected network?: Network;
 
   // turnkey client config variables
+  private rpId: string;
   private description?: string;
   protected apiBaseUrl: string;
   protected apiPrivateKey: string;
@@ -20,6 +21,7 @@ export default class Base {
     this.apiPrivateKey = config.apiPrivateKey;
     this.apiPublicKey = config.apiPublicKey;
     this.defaultOrganizationId = config.defaultOrganizationId;
+    this.rpId = config.rpId;
     this.network =
       !config.network || config.network === undefined
         ? "testnet"
@@ -70,6 +72,10 @@ export default class Base {
 
   getClient(): TurnkeyServerSDK {
     return this.client;
+  }
+
+  getRpId(): string {
+    return this.rpId;
   }
 
   async invoke<T>(url: string, options?: RequestInit): Promise<T> {

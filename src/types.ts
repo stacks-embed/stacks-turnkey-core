@@ -4,6 +4,7 @@ export declare type Config = {
   name?: string;
   description?: string;
   network?: Network;
+  rpId: string;
 
   apiBaseUrl: string;
   apiPrivateKey: string;
