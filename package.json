@@ -1,6 +1,6 @@
 {
   "name": "stacks-turnkey-core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/cjs/turnkey-stacks.js",
   "module": "dist/esm/turnkey-stacks.m.js",
