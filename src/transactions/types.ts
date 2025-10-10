@@ -43,9 +43,9 @@ export type SubOrg = {
     organizationId: string;
     status: string;
     type: string;
-    intent: { createSubOrganizationIntentV7: [Object] };
-    result: { createSubOrganizationResultV7: [Object] };
-    votes: [[Object]];
+    intent: { createSubOrganizationIntentV7: [object] };
+    result: { createSubOrganizationResultV7: [object] };
+    votes: [[object]];
     appProofs: [];
     fingerprint: string;
     canApprove: false;

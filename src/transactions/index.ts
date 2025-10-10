@@ -31,7 +31,7 @@ function toSerializableJson(data: any): any {
 }
 
 export default class Transactions extends Base {
-  public async generateStacksWallet({
+  public async createStacksWallet({
     userName,
     walletName,
   }: {

@@ -62,6 +62,9 @@ importers:
       eslint:
         specifier: ^9.24.0
         version: 9.37.0(jiti@2.6.1)
+      globals:
+        specifier: ^16.4.0
+        version: 16.4.0
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -2394,6 +2397,10 @@ packages:
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
+    engines: {node: '>=18'}
+
+  globals@16.4.0:
+    resolution: {integrity: sha512-ob/2LcVVaVGCYN+r14cnwnoDPUufjiYgSqRhiFD0Q1iI4Odora5RE8Iv1D24hAz5oMophRGkGz+yuvQmmUMnMw==}
     engines: {node: '>=18'}
 
   globalthis@1.0.4:
@@ -7491,6 +7498,8 @@ snapshots:
       ini: 4.1.1
 
   globals@14.0.0: {}
+
+  globals@16.4.0: {}
 
   globalthis@1.0.4:
     dependencies:

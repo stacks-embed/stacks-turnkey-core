@@ -4,7 +4,7 @@ import Auth from "./auth";
 import Transactions from "./transactions";
 import { applyMixins } from "./utils";
 
-class StacksTurnkey extends Base {}
+class StacksTurnkey extends Base implements Auth, Transactions {}
 interface StacksTurnkey extends Auth, Transactions {}
 
 applyMixins(StacksTurnkey, [Auth, Transactions]);

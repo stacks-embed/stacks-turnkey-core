@@ -1,40 +1,49 @@
 // eslint.config.mjs
 import js from "@eslint/js";
 import globals from "globals";
-import tseslint from "typescript-eslint";
-import pluginReact from "eslint-plugin-react";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
+import tsParser from "@typescript-eslint/parser";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
-  // Base ESLint configuration
+  // Base ESLint recommended config
   js.configs.recommended,
-  // TypeScript configuration
-  ...tseslint.configs.recommended,
-  // React configuration
+  // TypeScript config with parser and recommended rules
   {
-    plugins: {
-      react: pluginReact,
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+        ecmaFeatures: { jsx: true },
+      },
+      globals: {
+        ...globals.browser,
+      },
     },
+    plugins: {
+      "@typescript-eslint": tsPlugin,
+    },
+    rules: {
+      ...tsPlugin.configs.recommended.rules,
+      "@typescript-eslint/no-unused-vars": "warn", // Override or add TS specific rules here
+      // "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
+  // React specific overrides
+  {
+    files: ["**/*.{jsx,tsx}"],
     rules: {
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
     },
   },
-  // Global browser variables
-  {
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-      },
-    },
-  },
-  // Shared rules for all files
+  // Shared custom rules for all relevant files
   {
     files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
     rules: {
-      quotes: ["error", "double"], // Use base ESLint "quotes" rule
-      semi: ["error", "always"], // Use base ESLint "semi" rule
-      "@typescript-eslint/no-unused-vars": "warn", // TS-specific rule
+      quotes: ["error", "double"],
+      semi: ["error", "always"],
     },
   },
 ]);
