@@ -22,8 +22,7 @@
     "prepare": "husky",
     "lint": "eslint ./src/ --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint ./src --fix",
-    "release": "standard-version",
-    "start": "ts-node src/example.ts"
+    "release": "standard-version"
   },
   "files": [
     "dist"
@@ -68,5 +67,8 @@
     "@stacks/transactions": "^7.1.0",
     "@turnkey/sdk-server": "^4.10.1",
     "jsonwebtoken": "^9.0.2"
+  },
+  "dependencies": {
+    "stacks-turnkey-core": "^1.0.12"
   }
 }

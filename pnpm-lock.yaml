@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      stacks-turnkey-core:
+        specifier: ^1.0.12
+        version: 1.0.12(@stacks/common@7.0.2)(@stacks/network@7.2.0)(@stacks/transactions@7.2.0)(@turnkey/sdk-server@4.10.2(typescript@5.9.3))(jsonwebtoken@9.0.2)
     devDependencies:
       '@babel/preset-env':
         specifier: ^7.26.9
@@ -4046,6 +4050,15 @@ packages:
   stack-utils@2.0.6:
     resolution: {integrity: sha512-XlkWvfIm6RmsWtNJx+uqtKLS8eqFbxUg0ZzLXqY0caEy9l7hruX8IpiDnjsLavoBgqCCR71TqWO8MaXYheJ3RQ==}
     engines: {node: '>=10'}
+
+  stacks-turnkey-core@1.0.12:
+    resolution: {integrity: sha512-dolEl/+KB1j4HSp04ymbbhInmcuDWyFJEwb5QxEi04DIvtZ909D8PwsmUc6IpFZixiadzG0hQuLTPoMZYMyVHQ==}
+    peerDependencies:
+      '@stacks/common': ^7.0.2
+      '@stacks/network': ^7.2.0
+      '@stacks/transactions': ^7.1.0
+      '@turnkey/sdk-server': ^4.10.1
+      jsonwebtoken: ^9.0.2
 
   standard-version@9.5.0:
     resolution: {integrity: sha512-3zWJ/mmZQsOaO+fOlsa0+QK90pwhNd042qEcw6hKFNoLFs7peGyvPffpEBbK/DSGPbyOvli0mUIFv5A4qTjh2Q==}
@@ -9346,6 +9359,14 @@ snapshots:
   stack-utils@2.0.6:
     dependencies:
       escape-string-regexp: 2.0.0
+
+  stacks-turnkey-core@1.0.12(@stacks/common@7.0.2)(@stacks/network@7.2.0)(@stacks/transactions@7.2.0)(@turnkey/sdk-server@4.10.2(typescript@5.9.3))(jsonwebtoken@9.0.2):
+    dependencies:
+      '@stacks/common': 7.0.2
+      '@stacks/network': 7.2.0
+      '@stacks/transactions': 7.2.0
+      '@turnkey/sdk-server': 4.10.2(typescript@5.9.3)
+      jsonwebtoken: 9.0.2
 
   standard-version@9.5.0:
     dependencies:
